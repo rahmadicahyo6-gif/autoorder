@@ -1,0 +1,829 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>DIKXZ MARKET CH • POS + WA Auto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* CSS Variables untuk custom color hitam/putih */
+        :root {
+            --bg-body: #f4f6fc;
+            --bg-card: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #4b5563;
+            --border-color: #eef2ff;
+            --header-bg: rgba(255,255,255,0.75);
+            --menu-bg: #fefefe;
+            --menu-border: #edf2f7;
+            --badge-bg: #eef2ff;
+            --badge-text: #2c3e66;
+            --btn-bg: #1e293b;
+            --btn-hover: #0f172a;
+            --btn-disabled: #e2e8f0;
+            --accent: #2dd4bf;
+            --accent-dark: #0f3b2c;
+            --danger: #f97316;
+            --soldout-bg: rgba(0,0,0,0.65);
+            --wa-bg: #eef2ff;
+            --log-bg: #f1f5f9;
+        }
+
+        body {
+            background: var(--bg-body);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            padding: 24px 20px;
+            transition: all 0.2s ease;
+        }
+
+        /* MODE HITAM */
+        body.dark-mode {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --header-bg: rgba(30,41,59,0.85);
+            --menu-bg: #0f172a;
+            --menu-border: #334155;
+            --badge-bg: #334155;
+            --badge-text: #cbd5e1;
+            --btn-bg: #2dd4bf;
+            --btn-hover: #14b8a6;
+            --btn-disabled: #475569;
+            --accent: #2dd4bf;
+            --accent-dark: #5eead4;
+            --danger: #f97316;
+            --soldout-bg: rgba(0,0,0,0.8);
+            --wa-bg: #334155;
+            --log-bg: #0f172a;
+        }
+
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+        }
+
+        /* header glassmorph */
+        .header-modern {
+            background: var(--header-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 32px;
+            padding: 20px 28px;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.02);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .header-modern h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(120deg, #0f2b3d, #1e6f5c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        body.dark-mode .header-modern h1 {
+            background: linear-gradient(120deg, #5eead4, #2dd4bf);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+        .header-modern p {
+            color: var(--text-secondary);
+            margin-top: 8px;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--accent);
+            padding-left: 16px;
+        }
+        .theme-toggle {
+            display: flex;
+            gap: 12px;
+            background: var(--bg-card);
+            padding: 6px;
+            border-radius: 60px;
+            border: 1px solid var(--border-color);
+        }
+        .theme-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: 0.2s;
+            color: var(--text-primary);
+        }
+        .theme-btn.active {
+            background: var(--accent);
+            color: #0f172a;
+        }
+        body.dark-mode .theme-btn.active {
+            background: var(--accent);
+            color: #0f172a;
+        }
+
+        /* 2 kolom */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* card style */
+        .card-glass {
+            background: var(--bg-card);
+            border-radius: 32px;
+            padding: 1.5rem;
+            margin-bottom: 24px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+        .card-header i {
+            font-size: 1.4rem;
+            color: var(--accent);
+        }
+
+        /* menu grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 18px;
+        }
+        .menu-item {
+            background: var(--menu-bg);
+            border-radius: 24px;
+            padding: 16px 12px;
+            transition: all 0.2s ease;
+            border: 1px solid var(--menu-border);
+            position: relative;
+        }
+        .menu-item:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 18px -8px rgba(0,0,0,0.1);
+        }
+        .menu-name {
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-primary);
+        }
+        .menu-price {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent-dark);
+            margin: 10px 0 6px;
+        }
+        body.dark-mode .menu-price {
+            color: var(--accent);
+        }
+        .stock-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            background: var(--badge-bg);
+            padding: 4px 12px;
+            border-radius: 40px;
+            color: var(--badge-text);
+            font-weight: 500;
+        }
+        .stock-badge.out {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        body.dark-mode .stock-badge.out {
+            background: #7f1a1a;
+            color: #fca5a5;
+        }
+        .add-btn {
+            width: 100%;
+            background: var(--btn-bg);
+            border: none;
+            margin-top: 14px;
+            padding: 10px 0;
+            border-radius: 40px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .add-btn:hover:not(:disabled) {
+            background: var(--btn-hover);
+        }
+        .add-btn:disabled {
+            background: var(--btn-disabled);
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+        /* badge no stock keren */
+        .soldout-tag {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--soldout-bg);
+            backdrop-filter: blur(4px);
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 60px;
+            color: #ffd7d7;
+            letter-spacing: -0.2px;
+            border: 0.5px solid rgba(255,255,255,0.2);
+        }
+
+        /* cart table */
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .cart-table th {
+            text-align: left;
+            padding: 12px 6px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        .cart-table td {
+            padding: 12px 6px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            color: var(--text-primary);
+        }
+        .qty-modern {
+            width: 70px;
+            background: var(--log-bg);
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            border-radius: 28px;
+            text-align: center;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        .remove-icon {
+            color: var(--danger);
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+        .total-big {
+            text-align: right;
+            font-size: 1.7rem;
+            font-weight: 800;
+            margin-top: 20px;
+            padding-top: 12px;
+            border-top: 2px dashed var(--border-color);
+            color: var(--accent-dark);
+        }
+        body.dark-mode .total-big {
+            color: var(--accent);
+        }
+        .checkout-btn {
+            background: #10b981;
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 44px;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-top: 18px;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .checkout-btn:hover:not(:disabled) {
+            background: #059669;
+        }
+        .checkout-btn:disabled {
+            background: var(--btn-disabled);
+            cursor: not-allowed;
+        }
+
+        /* WA fixed */
+        .wa-info-fixed {
+            background: var(--wa-bg);
+            border-radius: 60px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            border: 1px solid var(--border-color);
+        }
+        .wa-info-fixed i {
+            font-size: 1.8rem;
+            color: #25D366;
+        }
+        .wa-number {
+            font-family: monospace;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .wa-badge {
+            background: #25D36620;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #075e54;
+        }
+        .hint-text {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+        .wa-note {
+            font-size: 0.7rem;
+            background: #fff3e0;
+            border-radius: 40px;
+            padding: 6px 12px;
+            display: inline-block;
+            margin-top: 6px;
+        }
+        body.dark-mode .wa-note {
+            background: #332200;
+            color: #fbbf24;
+        }
+
+        /* auto order */
+        .auto-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            margin: 18px 0;
+        }
+        .auto-select, .auto-input-num {
+            background: var(--log-bg);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px;
+            border-radius: 48px;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+        .auto-btn {
+            background: #334155;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 48px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .auto-btn.running {
+            background: #dc2626;
+        }
+        .log-modern {
+            background: var(--log-bg);
+            border-radius: 24px;
+            padding: 14px;
+            font-family: 'SF Mono', monospace;
+            font-size: 0.7rem;
+            height: 150px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        .log-line {
+            border-left: 2px solid var(--accent);
+            padding-left: 10px;
+            margin: 8px 0;
+        }
+        .log-line.error {
+            border-left-color: var(--danger);
+            color: var(--danger);
+        }
+
+        @media (max-width: 860px) {
+            .two-columns {
+                grid-template-columns: 1fr;
+            }
+            body {
+                padding: 16px;
+            }
+            .header-modern {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header-modern">
+        <div>
+            <h1><i class="fas fa-boxes"></i> 𝘿𝙄𝙆𝙓𝙕 𝙈𝘼𝙍𝙆𝙀𝙏 𝘾𝙃 <span style="font-weight: 400; font-size: 0.9rem;">&nbsp;• stok realtime</span></h1>
+            <p>Checkout otomatis kirim order ke WhatsApp penjual — stok berkurang otomatis, jika habis muncul tanda "no stock" minimalis</p>
+        </div>
+        <div class="theme-toggle">
+            <button class="theme-btn active" id="lightModeBtn"><i class="fas fa-sun"></i> Putih</button>
+            <button class="theme-btn" id="darkModeBtn"><i class="fas fa-moon"></i> Hitam</button>
+        </div>
+    </div>
+
+    <div class="two-columns">
+        <!-- MENU -->
+        <div class="card-glass">
+            <div class="card-header">
+                <i class="fas fa-box-open"></i> 
+                <span>𝘼𝙇𝙇 𝙋𝙍𝙊𝘿𝙐𝙆 𝘿𝙄𝙆𝙓𝙕𝙯</span>
+            </div>
+            <div id="productGrid" class="menu-grid"></div>
+        </div>
+
+        <!-- KANAN -->
+        <div>
+            <!-- WA fixed -->
+            <div class="card-glass">
+                <div class="card-header">
+                    <i class="fab fa-whatsapp"></i> 
+                    <span>WhatsApp Official</span>
+                </div>
+                <div class="wa-info-fixed">
+                    <i class="fab fa-whatsapp"></i>
+                    <span class="wa-number">+62 859-2247-1521</span>
+                    <span class="wa-badge"><i class="fas fa-lock"></i> DIKXZ MARKET</span>
+                </div>
+                <div class="hint-text"><i class="fas fa-info-circle"></i> Nomor ini sudah ditetapkan (fixed). Pelanggan akan chat ke sini setelah checkout.</div>
+                <div class="wa-note"><i class="fas fa-check-circle"></i> Tidak bisa diubah oleh siapapun</div>
+            </div>
+
+            <!-- Keranjang -->
+            <div class="card-glass">
+                <div class="card-header">
+                    <i class="fas fa-shopping-cart"></i> 
+                    <span>Keranjang belanja</span>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="cart-table" id="cartTable">
+                        <thead>
+                            <tr><th>Item</th><th>Harga</th><th>Qty</th><th>Subtotal</th><th></th></tr>
+                        </thead>
+                        <tbody id="cartBody"></tbody>
+                    </table>
+                </div>
+                <div class="total-big" id="grandTotal">Rp 0</div>
+                <button id="checkoutBtn" class="checkout-btn"><i class="fab fa-whatsapp"></i> Checkout & Chat Penjual</button>
+            </div>
+
+            <!-- Auto order -->
+            <div class="card-glass">
+                <div class="card-header">
+                    <i class="fas fa-robot"></i> 
+                    <span>Auto order pintar</span>
+                </div>
+                <div class="auto-row">
+                    <select id="autoProduct" class="auto-select">
+                        <option value="">pilih produk</option>
+                    </select>
+                    <input type="number" id="autoInterval" class="auto-input-num" placeholder="detik" value="6" step="1" style="width:85px">
+                    <input type="number" id="autoQty" class="auto-input-num" placeholder="qty" value="1" style="width:75px">
+                    <button id="toggleAutoBtn" class="auto-btn"><i class="fas fa-play"></i> START</button>
+                </div>
+                <div class="log-modern" id="logBox">
+                    <div class="log-line"><i class="far fa-clock"></i> Ready — stok akan berkurang setiap checkout.</div>
+                </div>
+                <div class="hint-text" style="margin-top: 10px;"><i class="fas fa-mouse-pointer"></i> Auto order hanya menambah ke keranjang, checkout manual.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 9 PRODUK DENGAN LOGO BARANG (FA-BOX)
+    let products = [
+        { id: 1, name: "HOLLOW 1 BULAN", price: 20000, stock: 100, icon: "fa-box" },
+        { id: 2, name: "HOLLOW VIP 1 BULAN", price: 25000, stock: 100, icon: "fa-box" },
+        { id: 3, name: "HOLLOW PREM", price: 40000, stock: 100, icon: "fa-box" },
+        { id: 4, name: "HOLLOW VIP PREM", price: 50000, stock: 100, icon: "fa-box" },
+        { id: 5, name: "HOLLOW RESS", price: 80000, stock: 100, icon: "fa-box" },
+        { id: 6, name: "HOLLOW PARTNER", price: 100000, stock: 20, icon: "fa-box" },
+        { id: 7, name: "MEM PREMIUM MURBUG", price: 15000, stock: 20, icon: "fa-box" },
+        { id: 8, name: "RESS MURBUG", price: 30000, stock: 30, icon: "fa-box" },
+        { id: 9, name: "NOKOS INDO", price: 5000, stock: 20, icon: "fa-box" }
+    ];
+    let cart = [];
+    let autoActive = false;
+    let autoIntervalRef = null;
+
+    const FIXED_SELLER_PHONE = "6285922471521";
+
+    function formatRp(amount) {
+        return "Rp " + amount.toLocaleString('id-ID');
+    }
+
+    function addLog(msg, isError = false) {
+        const logDiv = document.getElementById('logBox');
+        const entry = document.createElement('div');
+        entry.className = isError ? 'log-line error' : 'log-line';
+        entry.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> [${new Date().toLocaleTimeString()}] ${msg}`;
+        logDiv.appendChild(entry);
+        entry.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (logDiv.children.length > 28) logDiv.removeChild(logDiv.children[0]);
+    }
+
+    // render produk + tampilkan "no stock" keren jika stok habis
+    function renderProducts() {
+        const grid = document.getElementById('productGrid');
+        grid.innerHTML = '';
+        products.forEach(p => {
+            const outOfStock = (p.stock <= 0);
+            const card = document.createElement('div');
+            card.className = 'menu-item';
+            card.innerHTML = `
+                ${outOfStock ? '<div class="soldout-tag"><i class="fas fa-ban"></i> no stock</div>' : ''}
+                <div class="menu-name"><span><i class="fas ${p.icon}" style="margin-right: 8px; color:#2dd4bf;"></i> ${p.name}</span> <i class="fas fa-tag" style="color:#94a3b8"></i></div>
+                <div class="menu-price">${formatRp(p.price)}</div>
+                <div><span class="stock-badge ${outOfStock ? 'out' : ''}"><i class="fas ${outOfStock ? 'fa-times-circle' : 'fa-boxes'}"></i> ${outOfStock ? 'habis' : `stok ${p.stock}`}</span></div>
+                <button class="add-btn" data-id="${p.id}" ${outOfStock ? 'disabled' : ''}>
+                    <i class="fas ${outOfStock ? 'fa-ban' : 'fa-cart-plus'}"></i> ${outOfStock ? 'tidak tersedia' : 'tambah'}
+                </button>
+            `;
+            grid.appendChild(card);
+        });
+
+        document.querySelectorAll('.add-btn:not([disabled])').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(btn.dataset.id);
+                addToCart(id, 1);
+            });
+        });
+    }
+
+    function addToCart(productId, qty = 1) {
+        const product = products.find(p => p.id === productId);
+        if (!product || product.stock <= 0) {
+            addLog(`⚠️ ${product?.name || 'produk'} sedang habis stok`, true);
+            return;
+        }
+        if (product.stock < qty) {
+            addLog(`⚠️ stok ${product.name} tersisa ${product.stock}`, true);
+            return;
+        }
+        const existing = cart.find(i => i.productId === productId);
+        if (existing) {
+            existing.quantity += qty;
+        } else {
+            cart.push({ productId: product.id, name: product.name, price: product.price, quantity: qty });
+        }
+        renderCart();
+        addLog(`➕ ${qty} ${product.name} ditambahkan`);
+    }
+
+    function removeItem(productId) {
+        cart = cart.filter(i => i.productId !== productId);
+        renderCart();
+        addLog(`🗑 item dihapus dari keranjang`);
+    }
+
+    function updateQty(productId, newQty) {
+        const item = cart.find(i => i.productId === productId);
+        if (!item) return;
+        if (newQty <= 0) {
+            removeItem(productId);
+            return;
+        }
+        const prod = products.find(p => p.id === productId);
+        if (newQty > prod.stock) {
+            addLog(`stok ${prod.name} hanya ${prod.stock}`, true);
+            return;
+        }
+        item.quantity = newQty;
+        renderCart();
+    }
+
+    function renderCart() {
+        const tbody = document.getElementById('cartBody');
+        tbody.innerHTML = '';
+        let total = 0;
+        cart.forEach(item => {
+            const subtotal = item.price * item.quantity;
+            total += subtotal;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td style="font-weight:600;"><i class="fas fa-box" style="margin-right: 8px; color:#2dd4bf;"></i> ${item.name}</td>
+                <td>${formatRp(item.price)}</td>
+                <td><input type="number" class="qty-modern" data-id="${item.productId}" value="${item.quantity}" min="1" step="1"></td>
+                <td>${formatRp(subtotal)}</td>
+                <td><button class="remove-icon" data-id="${item.productId}"><i class="fas fa-trash-alt"></i></button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+        document.querySelectorAll('.qty-modern').forEach(inp => {
+            inp.addEventListener('change', (e) => {
+                const pid = parseInt(inp.dataset.id);
+                let val = parseInt(inp.value);
+                if (isNaN(val)) val = 1;
+                updateQty(pid, val);
+            });
+        });
+        document.querySelectorAll('.remove-icon').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const pid = parseInt(btn.dataset.id);
+                removeItem(pid);
+            });
+        });
+        document.getElementById('grandTotal').innerHTML = `${formatRp(total)}`;
+        
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        if (cart.length === 0) checkoutBtn.disabled = true;
+        else checkoutBtn.disabled = false;
+        return total;
+    }
+
+    function sendOrderToWa(orderSnapshot, totalAmount) {
+        let detailOrder = "";
+        orderSnapshot.forEach(item => {
+            detailOrder += `📦 ${item.name} : ${item.quantity} x ${formatRp(item.price)} = ${formatRp(item.price * item.quantity)}\n`;
+        });
+        const pesan = `*🛒 ORDER BARU DARI PELANGGAN*%0A%0A${detailOrder}%0A────────────────%0A*TOTAL: ${formatRp(totalAmount)}*%0A%0A📦 Mohon segera diproses. Terima kasih.`;
+        const waUrl = `https://wa.me/${FIXED_SELLER_PHONE}?text=${pesan}`;
+        window.open(waUrl, '_blank');
+        addLog(`📱 WhatsApp penjual dibuka (fixed: +62 ${FIXED_SELLER_PHONE.slice(-10)})`);
+    }
+
+    function checkout() {
+        if (cart.length === 0) {
+            addLog("❌ keranjang masih kosong", true);
+            return;
+        }
+        let enough = true;
+        for (let item of cart) {
+            const prod = products.find(p => p.id === item.productId);
+            if (prod.stock < item.quantity) {
+                addLog(`stok ${prod.name} kurang! (butuh ${item.quantity}, sisa ${prod.stock})`, true);
+                enough = false;
+            }
+        }
+        if (!enough) return;
+
+        const orderCopy = cart.map(item => ({ name: item.name, quantity: item.quantity, price: item.price }));
+        const totalPrice = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+
+        for (let item of cart) {
+            const prod = products.find(p => p.id === item.productId);
+            prod.stock -= item.quantity;
+        }
+        addLog(`✅ checkout sukses! total ${formatRp(totalPrice)}. Stok diperbarui.`);
+
+        sendOrderToWa(orderCopy, totalPrice);
+
+        cart = [];
+        renderCart();
+        renderProducts();
+        updateAutoDropdown();
+    }
+
+    function updateAutoDropdown() {
+        const select = document.getElementById('autoProduct');
+        select.innerHTML = '<option value="">-- pilih menu --</option>';
+        products.forEach(p => {
+            const option = document.createElement('option');
+            option.value = p.id;
+            option.textContent = `${p.name} (stok ${p.stock})`;
+            if (p.stock <= 0) option.disabled = true;
+            select.appendChild(option);
+        });
+    }
+
+    function autoAddToCart() {
+        if (!autoActive) return;
+        const productId = parseInt(document.getElementById('autoProduct').value);
+        const qty = parseInt(document.getElementById('autoQty').value);
+        if (isNaN(productId) || !productId) {
+            addLog("auto order: pilih produk dulu", true);
+            return;
+        }
+        if (isNaN(qty) || qty < 1) {
+            addLog("qty tidak valid", true);
+            return;
+        }
+        const product = products.find(p => p.id === productId);
+        if (!product || product.stock < qty) {
+            addLog(`auto order gagal: stok ${product?.name || 'produk'} tidak cukup`, true);
+            return;
+        }
+        addToCart(productId, qty);
+        addLog(`🤖 auto-order: +${qty} ${product.name} (ke keranjang)`);
+    }
+
+    function toggleAuto() {
+        const btn = document.getElementById('toggleAutoBtn');
+        const intervalVal = parseInt(document.getElementById('autoInterval').value);
+        if (autoActive) {
+            clearInterval(autoIntervalRef);
+            autoActive = false;
+            btn.innerHTML = '<i class="fas fa-play"></i> START';
+            btn.classList.remove('running');
+            addLog("⏸ auto order berhenti");
+        } else {
+            if (isNaN(intervalVal) || intervalVal < 2) {
+                addLog("interval minimal 2 detik", true);
+                return;
+            }
+            if (!document.getElementById('autoProduct').value) {
+                addLog("pilih produk untuk auto order", true);
+                return;
+            }
+            autoActive = true;
+            btn.innerHTML = '<i class="fas fa-stop"></i> STOP';
+            btn.classList.add('running');
+            autoIntervalRef = setInterval(() => {
+                autoAddToCart();
+            }, intervalVal * 1000);
+            addLog(`🚀 auto order jalan tiap ${intervalVal} detik`);
+        }
+    }
+
+    // Theme toggling
+    function initTheme() {
+        const lightBtn = document.getElementById('lightModeBtn');
+        const darkBtn = document.getElementById('darkModeBtn');
+        
+        // Cek local storage atau preferensi sistem
+        const savedTheme = localStorage.getItem('dikxz_theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+            darkBtn.classList.add('active');
+            lightBtn.classList.remove('active');
+        } else if (savedTheme === 'light') {
+            document.body.classList.remove('dark-mode');
+            lightBtn.classList.add('active');
+            darkBtn.classList.remove('active');
+        } else {
+            // Default light
+            document.body.classList.remove('dark-mode');
+            lightBtn.classList.add('active');
+            darkBtn.classList.remove('active');
+        }
+        
+        lightBtn.addEventListener('click', () => {
+            document.body.classList.remove('dark-mode');
+            lightBtn.classList.add('active');
+            darkBtn.classList.remove('active');
+            localStorage.setItem('dikxz_theme', 'light');
+        });
+        
+        darkBtn.addEventListener('click', () => {
+            document.body.classList.add('dark-mode');
+            darkBtn.classList.add('active');
+            lightBtn.classList.remove('active');
+            localStorage.setItem('dikxz_theme', 'dark');
+        });
+    }
+
+    function init() {
+        initTheme();
+        renderProducts();
+        renderCart();
+        updateAutoDropdown();
+        document.getElementById('checkoutBtn').addEventListener('click', checkout);
+        document.getElementById('toggleAutoBtn').addEventListener('click', toggleAuto);
+        setInterval(() => {
+            updateAutoDropdown();
+            renderProducts();
+        }, 2500);
+    }
+    init();
+</script>
+</body>
+</html>
